@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 class Task
 {
     public function __construct(
@@ -10,8 +12,7 @@ class Task
         public bool $completed,
         public string $created_at,
         public string $updated_at
-    ) {
-    }
+    ) {}
 }
 
 $tasks = [
@@ -53,8 +54,14 @@ $tasks = [
     ),
 ];
 
-use Illuminate\Support\Facades\Route;
+Route::get('/', function () use ($tasks) {
+    return view("index", [
+        'tasks' => $tasks
+    ]);
+})->name('tasks.index');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/tasks/{id}", function ($id) {
+    return view("show", [
+        'id' => $id
+    ]);
+})->name('tasks.show');
